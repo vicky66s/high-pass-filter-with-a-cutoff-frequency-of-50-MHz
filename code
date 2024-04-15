@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <math.h>
+
+#define Fs 1000 // Sampling frequency
+#define Fc 50e6 // Cutoff frequency is 50 MHz
+#define N 4     // Filter order
+
+void butterworth_highpass(double *b, double *a, double Wn) {
+    // Calculate coefficients for a Butterworth high-pass filter
+    int i;
+    double a0 = 1.0;
+    double a1 = -2.0;
+    double a2 = 1.0;
+    double b0 = Wn * Wn;
+    double b1 = 0;
+    double b2 = -Wn * Wn;
+    
+    double scale_factor = 1.0 / (1.0 + a1 + a2);
+
+    // Normalize coefficients
+    *b++ = scale_factor * b0;
+    *b++ = scale_factor * b1;
+    *b++ = scale_factor * b2;
+    *a++ = scale_factor * a0;
+    *a++ = scale_factor * a1;
+    *a++ = scale_factor * a2;
+}
+
+int main() {
+    double b[N+1], a[N+1];
+    double Wn = Fc / (Fs / 2);
+
+    // Design the high-pass filter
+    butterworth_highpass(b, a, Wn);
+
+    // Print filter coefficients
+    printf("Filter Coefficients:\n");
+    printf("b = [");
+    for (int i = 0; i <= N; i++) {
+        printf("%.6f, ", b[i]);
+    }
+    printf("]\n");
+    printf("a = [");
+    for (int i = 0; i <= N; i++) {
+        printf("%.6f, ", a[i]);
+    }
+    printf("]\n");
+
+    return 0;
+}
