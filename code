@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define Fs 1000 // Sampling frequency.1
+#define Fs 1000 // Sampling frequency.10000000000000000000000000000000
 #define Fc 50e6 // Cutoff frequency is 50 MHz.
 #define N 4     // Filter order.
 
